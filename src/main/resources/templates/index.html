@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Home</title>
+	<!-- Meta tag Keywords -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8" />
+	<meta name="keywords" content=""
+	/>
+	<script th:src="@{/js/jquery-1.8.3.min.js}"></script>
+	<script>
+		addEventListener("load", function () {
+			setTimeout(hideURLbar, 0);
+		}, false);
+
+		function hideURLbar() {
+			window.scrollTo(0, 1);
+		}
+	</script>
+	<!-- Meta tag Keywords -->
+	<!-- css files -->
+	<link rel="stylesheet" th:href="@{../css/style.css}" type="text/css" media="all" />
+	<!-- Style-CSS -->
+	<link rel="stylesheet" th:href="@{../css/fontawesome-all.css}">
+	<!-- Font-Awesome-Icons-CSS -->
+	<!-- //css files -->
+</head>
+
+<body>
+	<!-- bg effect -->
+	<div id="bg">
+		<canvas></canvas>
+		<canvas></canvas>
+		<canvas></canvas>
+	</div>
+	<!-- //bg effect -->
+	<!-- title -->
+	<h1>Effect Login Form</h1>
+	<h2><p style="color:red;text-align: center" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p></h2>
+	<!-- //title -->
+	<!-- content -->
+	<div class="sub-main-w3">
+		<form th:action="yanzheng" method="post">
+			<h2>Login Now
+				<i class="fas fa-level-down-alt"></i>
+			</h2>
+			<div class="form-style-agile">
+				<label>
+					<i class="fas fa-user"></i>
+					Username
+				</label>
+				<input placeholder="Username" name="username" type="text" required="">
+			</div>
+			<div class="form-style-agile">
+				<label>
+					<i class="fas fa-unlock-alt"></i>
+					Password
+				</label>
+				<input placeholder="Password" name="password" type="password" required="">
+			</div>
+			<!-- checkbox -->
+			<div class="wthree-text">
+				<ul>
+					<li>
+						<a href="tozhuce">Do you want to register?</a>
+					</li>
+				</ul>
+			</div>
+			<!-- //checkbox -->
+			<input type="submit" value="Log In">
+		</form>
+	</div>
+	<!-- //content -->
+
+
+	<!-- Jquery -->
+	<script th:src="@{../js/jquery-3.3.1.min.js}"></script>
+	<!-- //Jquery -->
+
+	<!-- effect js -->
+	<script th:src="@{../js/canva_moving_effect.js}"></script>
+	<!-- //effect js -->
+
+</body>
+
+</html>

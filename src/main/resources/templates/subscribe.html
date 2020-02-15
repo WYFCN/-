@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>订阅页面</title>
+
+    <link rel="stylesheet" th:href="@{../css/style1.css}">
+
+    <script type="text/javascript" th:src="@{../js/jquery-2.1.0.min.js}"></script>
+    <script type="text/javascript" th:src="@{../js/easyform.js}"></script>
+    <script th:src="@{/js/jquery-1.8.3.min.js}"></script>
+    <script type="text/javascript">
+        window.onbeforeunload=function () {
+            $.ajax({
+                url: "/toPra",
+                type: 'get',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: {"1":"2"},
+                async:true,
+                success: function(data){
+
+                }
+            });
+            return "离开？";
+        }
+        function check(f) {
+            if(f.address.value=="")
+            {
+                alert("请输入发货地址！");
+                f.address.focus();
+                return false
+            }
+        }
+    </script>
+</head>
+<body th:style="'background:url('+'/img/bg.png'+');'+'background-size:100% 150%;'">
+<br>
+<div class="form-div">
+    <form th:action="@{/chuli_order}" method="post" onsubmit="return check(this)">
+        <table>
+            <tr>
+                <td>订单编号</td>
+                <td><input name="num" type="text" id="num" readonly="readonly" th:value="${num}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>图书名字</td>
+                <td><input name="name" type="text" id="name" readonly="readonly" th:value="${book.name}"/></td>
+            </tr>
+            <tr>
+                <td>订单金额</td>
+                <td><input name="amount" type="text" id="amount" readonly="readonly" th:value="${book.price}"/></td>
+            </tr>
+            <tr>
+                <td>用户姓名</td>
+                <td><input name="username" type="text" id="username" readonly="readonly" th:value="${session.USERNAME}"/></td>
+            </tr>
+            <tr>
+                <td>发货地址</td>
+                <td><input name="address" type="text" id="address"/></td>
+            </tr>
+        </table>
+
+        <div class="buttons">
+            <input value="提交订单" type="submit" style="margin-right:90px; margin-top:20px;"/>
+            <a th:href="@{/tolist}" style="margin-right:45px; margin-top:20px;font-size: 15px">"撤回"</a>
+        </div>
+
+        <br class="clear">
+    </form>
+</div>
+
+</body>
+</html>

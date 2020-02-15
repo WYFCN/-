@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>分页操作</title>
+</head>
+<body>
+<table style="width: 50%; margin: auto">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>用户账号</th>
+        <th>用户密码</th>
+        <th>用户邮箱</th>
+        <th>用户姓名</th>
+        <th>用户权限</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user:${userDTOList}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.password}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.name}"></td>
+        <td th:text="${user.status==0?'用户':'管理员'}"></td>
+    </tr>
+    </tbody>
+</table>
+<div align="center">
+
+    <a class="allpage"><b th:text="'共 '+ ${pageInfo.getPages()}+ ' 页'"></b></a>
+
+    <a  th:href="@{/findUserList.do(currentPage=${pageInfo.getFirstPage()})}"  >首页</a>
+
+    <a th:if="${pageInfo.hasPreviousPage()} == true" th:href="@{/findUserList.do(currentPage=${pageInfo.getPrePage()})}"  >上一页</a>
+
+    <a th:href="@{'/findUserList.do?currentPage=' + ${i}}"  th:each="i :${#numbers.sequence(pageInfo.firstPage, pageInfo.lastPage)}" th:text="  ${i}"   th:class="${pageInfo.getPageNumber() == i}? 'page-item active' :' page-item' "></a>
+
+    <a th:if="${pageInfo.hasNextPage()} == true" th:href="@{/findUserList.do(currentPage=${pageInfo.getNextPage()})}" >下一页</a>
+
+    <a th:href="@{/findUserList.do(currentPage=${pageInfo.getLastPage()})}" >尾页</a>
+
+</div>
+
+</body>
+</html>

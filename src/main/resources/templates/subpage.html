@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Newspape Detail</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link th:href="@{../css/templatemo_style.css}" rel="stylesheet" type="text/css" />
+    <script th:src="@{/js/jquery-1.8.3.min.js}"></script>
+    <script type="text/javascript">
+        window.onbeforeunload=function () {
+            $.ajax({
+                url: "/toPra",
+                type: 'get',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: {"1":"2"},
+                async:true,
+                success: function(data){
+
+                }
+            });
+            return "离开？";
+        }
+    </script>
+</head>
+<body>
+<!--  Free CSS Templates from www.templatemo.com -->
+<div id="templatemo_container">
+	<div id="templatemo_menu">
+    	<ul>
+            <li><a th:href="@{/tolist}" class="" th:classappend="${flag==1}? 'current':''">主页面</a></li>
+            <li><a th:href="@{/toNewRelease}" class="" th:classappend="${flag==2}? 'current':''">最新发布</a></li>
+            <li><a th:href="@{/toOrder}" class="" th:classappend="${flag==4}? 'current':''">订单详情</a></li>
+            <li>
+                <form name="form1" th:action="@{/searchBook}" method="post">
+                    <input type="text" name="news" id="inputId" value=""/>
+                    <a href='javascript:document.form1.submit();' id="linkToCart" class="" th:classappend="${flag==3}? 'current':''">搜索</a>
+                </form>
+            </li>
+            <li><a th:href="@{#}" class="current" style="position: absolute;left: 950px;top: 15px;font-size: 20px">[(${session.USERNAME})]</a></li>
+    	</ul>
+    </div> <!-- end of menu -->
+    
+    <div id="templatemo_header">
+    	<div id="templatemo_special_offers">
+        	<p>
+                <span>25%</span> discounts for
+        purchase over $ 40
+        	</p>
+			<a href="#" style="margin-left: 50px;">Read more...</a>
+        </div>
+        
+        
+        <div id="templatemo_new_books">
+        	<ul>
+                <li>Suspen disse</li>
+                <li>Maece nas metus</li>
+                <li>In sed risus ac feli</li>
+            </ul>
+            <a href="#" style="margin-left: 50px;">Read more...</a>
+        </div>
+    </div> <!-- end of header -->
+    
+    <div id="templatemo_content">
+    	
+        <div id="templatemo_content_left">
+        	<div class="templatemo_content_left_section">
+            	<h1>图书分类</h1>
+                <ul th:each="category:${categorys}">
+                    <li><a th:href="@{'/toCategory/'+${category.id}}"><span th:text="${category.cate}" style="font-size: 15px"></span></a></li>
+                </ul>
+            </div>
+			<div class="templatemo_content_left_section">
+            	<h1>畅销书排行</h1>
+                <ul th:each="book:${books1}">
+                    <li><a th:href="@{'/toBook/'+${book.id}}"><span th:text="${book.name}" style="font-size: 15px"></span></a></li>
+                </ul>
+            </div>
+        </div> <!-- end of content left -->
+        
+        <div id="templatemo_content_right">
+            <h1 th:text="${book.category+'  著·'+book.author}"></h1>
+            <div class="image_panel"><img th:src="${book.url}" alt="CSS Template" width="100" height="150" /></div>
+          <h2 th:text="${book.name}"></h2>
+            <ul>
+	            <li th:text="${'著  '+book.author}"></li>
+            	<li th:text="${book.date}"></li>
+                <li th:text="${book.press}"></li>
+            </ul>
+            <h2 th:text="${book.text}"></h2>
+             <div class="cleaner_with_height">&nbsp;</div>
+        </div> <!-- end of content right -->
+    	<div class="cleaner_with_height">&nbsp;</div>
+    </div> <!-- end of content -->
+</div>
+</body>
+</html>

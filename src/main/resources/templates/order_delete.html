@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>订单删除</title>
+
+    <link rel="stylesheet" type="text/css"  th:href="@{../static/css/nav.css }"/>
+    <link rel="stylesheet" type="text/css" th:href="@{../static/css/iconfont.css}"/>
+    <script type="text/javascript" th:src="@{../static/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{../static/js/nav.js}"></script>
+</head>
+<body>
+
+<div class="nav">
+    <div class="nav-top">
+        <div id="mini" style="border-bottom:1px solid rgba(255,255,255,.1)"><img th:src="@{../static/img/mini.png}" ></div>
+    </div>
+    <ul>
+        <li class="nav-item">
+            <a href="javascript:;"><i class="my-icon nav-icon icon_1"></i><span>用户管理</span><i class="my-icon nav-more"></i></a>
+            <ul>
+                <li><a th:href="@{/users}"><span>用户信息</span></a></li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a href="javascript:;"><i class="my-icon nav-icon icon_2"></i><span>图书管理</span><i class="my-icon nav-more"></i></a>
+            <ul>
+                <li><a th:href="@{/books}"><span>图书列表</span></a></li>
+                <li><a th:href="@{/addbook}"><span>图书添加</span></a></li>
+                <li><a th:href="@{/books1}"><span>图书编辑</span></a></li>
+                <li><a th:href="@{/bookDetail}"><span>图书详情</span></a></li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a href="javascript:;"><i class="my-icon nav-icon icon_3"></i><span>订单管理</span><i class="my-icon nav-more"></i></a>
+            <ul>
+                <li><a th:href="@{/orders}"><span>订单列表</span></a></li>
+                <li><a th:href="@{/to_send_goods}"><span>发送货物</span></a></li>
+                <li><a th:href="@{/orders_del}"><span>订单删除</span></a></li>
+                <li><a th:href="@{/orders_update}"><span>订单更新</span></a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<div style="text-align:center;margin:-550px 0px; font:normal 14px/24px 'MicroSoft YaHei';">
+    <table style="width: 60%; margin: auto;text-align: center">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>订单编号</th>
+            <th>订单名字</th>
+            <th>订单金额</th>
+            <th>发货地址</th>
+            <th>订单用户</th>
+            <th>订单状态</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="orde,order_st:${ordersList}">
+            <td th:text="${orde.id}"></td>
+            <td th:text="${orde.num}"></td>
+            <td th:text="${orde.name}"></td>
+            <td th:text="${orde.amount+'$'}"></td>
+            <td th:text="${orde.address}"></td>
+            <td th:text="${user_name[order_st.index]}"></td>
+            <td th:text="${orde.state}"></td>
+            <td>
+                <form th:action="@{'/order/'+${orde.id}}" method="post">
+                    <button type="submit" style="color: #5a88c8">删除</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div align="center" style="position: fixed;left:0;right:0;bottom:0; ">
+
+        <a class="allpage"><b th:text="'共 '+ ${pageInfo.getPages()}+ ' 页'"></b></a>
+
+        <a  th:href="@{/orders_del(currentPage=${pageInfo.getFirstPage()})}"  >首页</a>
+
+        <a th:if="${pageInfo.hasPreviousPage()} == true" th:href="@{/orders_del(currentPage=${pageInfo.getPrePage()})}"  >上一页</a>
+
+        <a th:href="@{'/orders_del?currentPage=' + ${i}}"  th:each="i :${#numbers.sequence(pageInfo.firstPage, pageInfo.lastPage)}" th:text="  ${i}"   th:class="${pageInfo.getPageNumber() == i}? 'page-item active' :' page-item' "></a>
+
+        <a th:if="${pageInfo.hasNextPage()} == true" th:href="@{/orders_del(currentPage=${pageInfo.getNextPage()})}" >下一页</a>
+
+        <a th:href="@{/orders_del(currentPage=${pageInfo.getLastPage()})}" >尾页</a>
+
+    </div>
+</div>
+</body>
+</html>
