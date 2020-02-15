@@ -1,4 +1,4 @@
-图书订阅管理系统
+# 图书订阅管理系统
 # 技术栈：SpringBoot+Mybatis+Redis+Rabbitmq+thymeleaf+docker
 
 前端：使用thymeleaf模板引擎  
@@ -16,4 +16,15 @@
 使用了RedisTemplate操作redis  
 1.使用了双重检测锁防止缓存穿透的问题  
 2.使用了双删延时策略解决缓存和数据库不一致的问题  
+# 项目运行效果
 ![](https://github.com/WYFCN/-/blob/master/Image/项目照片/请勿在登陆.jpg)
+![](https://github.com/WYFCN/-/blob/master/Image/项目照片/注册.jpg)
+![](https://github.com/WYFCN/-/blob/master/Image/项目照片/用户主页面.jpg)
+![](https://github.com/WYFCN/-/blob/master/Image/项目照片/图书详情.jpg)
+![](https://github.com/WYFCN/-/blob/master/Image/项目照片/确认收货.jpg)
+![](https://github.com/WYFCN/-/blob/master/Image/项目照片/admin-user.jpg)
+![](https://github.com/WYFCN/-/blob/master/Image/项目照片/图书编辑.jpg)
+![](https://github.com/WYFCN/-/blob/master/Image/项目照片/图书介绍.jpg)
+![](https://github.com/WYFCN/-/blob/master/Image/项目照片/发送货物.jpg)
+# 总结：  
+    以后还会加入其他功能，继续完善，优化！
