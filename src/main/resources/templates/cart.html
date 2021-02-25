@@ -1,0 +1,345 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>购物车结算</title>
+
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/carts.css">
+    <script type="text/javascript">
+        function delCartById(cartId) {
+            $.ajax({
+                url: "[[@{/toDelCart}]]",
+                data: {"cartId": cartId},
+                dataType: "json",   //返回的数据是json 格式
+                type: "GET",
+                contentType: 'application/json',
+                success: function (result) {
+                    if (result == true) {
+                        alert("删除成功");
+                    } else {
+                        alert("删除失败");
+                    }
+                    window.location.reload();
+                }
+            })
+        }
+    </script>
+    <script type="text/javascript">
+        function sub_order() {
+            var address = document.getElementById("address").value;
+            var nn = [];
+            var cartIds = [];
+            var index = 0;
+            var jndex = 0;
+            $('.son_check').each(function () {
+                if ($(this).is(':checked')) {
+                    var num = parseInt($(this).parents('.order_lists').find('.sum').val());
+                    nn[index] = num;
+                    index = index + 1;
+                }
+            });
+            $('.son_check').each(function () {
+                if ($(this).is(':checked')) {
+                    var cartId = parseInt($(this).parents('.order_lists').find('.cartId').val());
+                    cartIds[jndex] = cartId;
+                    jndex = jndex + 1;
+                }
+            });
+            $.ajax({
+                url: "[[@{/tosub_order}]]",
+                data: {"cartIds": cartIds, "nn": nn, "address": address},
+                dataType: "json",   //返回的数据是json 格式
+                type: "POST",
+                success: function (result) {
+                    alert(result);
+                    // window.location.href="@{/toOrder}";
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+<section class="cartMain">
+    <div class="cartMain_hd">
+        <ul class="order_lists cartTop">
+            <li class="list_chk">
+                <!--所有商品全选-->
+                <input type="checkbox" id="all" class="whole_check">
+                <label for="all"></label>
+                全选
+            </li>
+            <li class="list_con">商品信息</li>
+            <li class="list_info">商品参数</li>
+            <li class="list_price">单价</li>
+            <li class="list_amount">数量</li>
+            <li class="list_sum">金额</li>
+            <li class="list_op">操作</li>
+        </ul>
+    </div>
+
+    <div class="cartBox">
+        <div class="shop_info">
+            <div class="all_check">
+                <!--店铺全选-->
+                <input type="checkbox" id="shop_a" class="shopChoice">
+                <label for="shop_a" class="shop"></label>
+            </div>
+            <div class="shop_name">
+                店铺：<a href="javascript:;">测试店铺名</a>
+            </div>
+        </div>
+        <div class="order_content" th:if="${cartList != null}">
+            <ul class="order_lists" th:if="${cartList.size()>=1}">
+                <li class="list_chk" id="test1">
+                    <input type="checkbox" id="checkbox_2" name="test" class="son_check">
+                    <label for="checkbox_2"></label>
+                </li>
+                <li class="list_con">
+                    <input class="cartId" style="display: none" th:value="${cartList[0].getId()}">
+                    <div class="list_img"><a href="javascript:;"><img th:src="${cartList[0].getUrl()}" alt=""></a></div>
+                    <div class="list_text"><a href="javascript:;">[[${cartList[0].getCart_name()}]]</a></div>
+                </li>
+                <li class="list_info">
+                    <p>出版社：[[${cartList[0].getPress()}]]</p>
+                    <p>日期：[[${cartList[0].getDate()}]]</p>
+                </li>
+                <li class="list_price">
+                    <p class="price">￥[[${cartList[0].getPrice()}]]</p>
+                </li>
+                <li class="list_amount">
+                    <div class="amount_box">
+                        <a href="javascript:;" class="reduce reSty">-</a>
+                        <input type="text" value="1" class="sum">
+                        <a href="javascript:;" class="plus">+</a>
+                    </div>
+                </li>
+                <li class="list_sum">
+                    <p class="sum_price">￥[[${cartList[0].getPrice()}]]</p>
+                </li>
+                <li class="list_op">
+                    <p class="del"><a href="javascript:;" class="delBtn"
+                                      th:onclick="'delCartById('+${cartList[0].getId()}+')'">移除商品</a></p>
+                </li>
+            </ul>
+            <ul class="order_lists" th:if="${cartList.size()>=2}">
+                <li class="list_chk">
+                    <input type="checkbox" id="checkbox_3" name="test" class="son_check">
+                    <label for="checkbox_3"></label>
+                </li>
+                <li class="list_con">
+                    <input class="cartId" style="display: none" th:value="${cartList[1].getId()}">
+                    <div class="list_img"><a href="javascript:;"><img th:src="${cartList[1].getUrl()}" alt=""></a></div>
+                    <div class="list_text"><a href="javascript:;">[[${cartList[1].getCart_name()}]]</a></div>
+                </li>
+                <li class="list_info">
+                    <p>出版社：[[${cartList[1].getPress()}]]</p>
+                    <p>日期：[[${cartList[1].getDate()}]]</p>
+                </li>
+                <li class="list_price">
+                    <p class="price">￥[[${cartList[1].getPrice()}]]</p>
+                </li>
+                <li class="list_amount">
+                    <div class="amount_box">
+                        <a href="javascript:;" class="reduce reSty">-</a>
+                        <input type="text" value="1" class="sum">
+                        <a href="javascript:;" class="plus">+</a>
+                    </div>
+                </li>
+                <li class="list_sum">
+                    <p class="sum_price">￥[[${cartList[1].getPrice()}]]</p>
+                </li>
+                <li class="list_op">
+                    <p class="del"><a href="javascript:;" class="delBtn"
+                                      th:onclick="'delCartById('+${cartList[1].getId()}+')'">移除商品</a></p>
+                </li>
+            </ul>
+            <ul class="order_lists" th:if="${cartList.size()>=3}">
+                <li class="list_chk">
+                    <input type="checkbox" id="checkbox_6" name="test" class="son_check">
+                    <label for="checkbox_6"></label>
+                </li>
+                <li class="list_con">
+                    <input class="cartId" style="display: none" th:value="${cartList[2].getId()}">
+                    <div class="list_img"><a href="javascript:;"><img th:src="${cartList[2].getUrl()}" alt=""></a></div>
+                    <div class="list_text"><a href="javascript:;">[[${cartList[2].getCart_name()}]]</a></div>
+                </li>
+                <li class="list_info">
+                    <p>出版社：[[${cartList[2].getPress()}]]</p>
+                    <p>日期：[[${cartList[2].getDate()}]]</p>
+                </li>
+                <li class="list_price">
+                    <p class="price">￥[[${cartList[2].getPrice()}]]</p>
+                </li>
+                <li class="list_amount">
+                    <div class="amount_box">
+                        <a href="javascript:;" class="reduce reSty">-</a>
+                        <input type="text" value="1" class="sum">
+                        <a href="javascript:;" class="plus">+</a>
+                    </div>
+                </li>
+                <li class="list_sum">
+                    <p class="sum_price">￥[[${cartList[2].getPrice()}]]</p>
+                </li>
+                <li class="list_op">
+                    <p class="del"><a href="javascript:;" class="delBtn"
+                                      th:onclick="'delCartById('+${cartList[2].getId()}+')'">移除商品</a></p>
+                </li>
+            </ul>
+            <ul class="order_lists" th:if="${cartList.size()>=4}">
+                <li class="list_chk">
+                    <input type="checkbox" id="checkbox_4" name="test" class="son_check">
+                    <label for="checkbox_4"></label>
+                </li>
+                <li class="list_con">
+                    <input class="cartId" style="display: none" th:value="${cartList[3].getId()}">
+                    <div class="list_img"><a href="javascript:;"><img th:src="${cartList[3].getUrl()}" alt=""></a></div>
+                    <div class="list_text"><a href="javascript:;">[[${cartList[3].getCart_name()}]]</a></div>
+                </li>
+                <li class="list_info">
+                    <p>出版社：[[${cartList[3].getPress()}]]</p>
+                    <p>日期：[[${cartList[3].getDate()}]]</p>
+                </li>
+                <li class="list_price">
+                    <p class="price">￥[[${cartList[3].getPrice()}]]</p>
+                </li>
+                <li class="list_amount">
+                    <div class="amount_box">
+                        <a href="javascript:;" class="reduce reSty">-</a>
+                        <input type="text" value="1" class="sum">
+                        <a href="javascript:;" class="plus">+</a>
+                    </div>
+                </li>
+                <li class="list_sum">
+                    <p class="sum_price">￥[[${cartList[3].getPrice()}]]</p>
+                </li>
+                <li class="list_op">
+                    <p class="del"><a href="javascript:;" class="delBtn"
+                                      th:onclick="'delCartById('+${cartList[3].getId()}+')'">移除商品</a></p>
+                </li>
+            </ul>
+            <ul class="order_lists" th:if="${cartList.size()>=5}">
+                <li class="list_chk">
+                    <input type="checkbox" id="checkbox_5" name="test" class="son_check">
+                    <label for="checkbox_5"></label>
+                </li>
+                <li class="list_con">
+                    <input class="cartId" style="display: none" th:value="${cartList[4].getId()}">
+                    <div class="list_img"><a href="javascript:;"><img th:src="${cartList[4].getUrl()}" alt=""></a></div>
+                    <div class="list_text"><a href="javascript:;">[[${cartList[4].getCart_name()}]]</a></div>
+                </li>
+                <li class="list_info">
+                    <p>出版社：[[${cartList[4].getPress()}]]</p>
+                    <p>日期：[[${cartList[4].getDate()}]]</p>
+                </li>
+                <li class="list_price">
+                    <p class="price">￥[[${cartList[4].getPrice()}]]</p>
+                </li>
+                <li class="list_amount">
+                    <div class="amount_box">
+                        <a href="javascript:;" class="reduce reSty">-</a>
+                        <input type="text" value="1" class="sum">
+                        <a href="javascript:;" class="plus">+</a>
+                    </div>
+                </li>
+                <li class="list_sum">
+                    <p class="sum_price">￥[[${cartList[4].getPrice()}]]</p>
+                </li>
+                <li class="list_op">
+                    <p class="del"><a href="javascript:;" class="delBtn"
+                                      th:onclick="'delCartById('+${cartList[4].getId()}+')'">移除商品</a></p>
+                </li>
+            </ul>
+            <ul class="order_lists" th:if="${cartList.size()>=6}">
+                <li class="list_chk">
+                    <input type="checkbox" id="checkbox_8" name="test" class="son_check">
+                    <label for="checkbox_8"></label>
+                </li>
+                <li class="list_con">
+                    <input class="cartId" style="display: none" th:value="${cartList[5].getId()}">
+                    <div class="list_img"><a href="javascript:;"><img th:src="${cartList[5].getUrl()}" alt=""></a></div>
+                    <div class="list_text"><a href="javascript:;">[[${cartList[5].getCart_name()}]]</a></div>
+                </li>
+                <li class="list_info">
+                    <p>出版社：[[${cartList[5].getPress()}]]</p>
+                    <p>日期：[[${cartList[5].getDate()}]]</p>
+                </li>
+                <li class="list_price">
+                    <p class="price">￥[[${cartList[5].getPrice()}]]</p>
+                </li>
+                <li class="list_amount">
+                    <div class="amount_box">
+                        <a href="javascript:;" class="reduce reSty">-</a>
+                        <input type="text" value="1" class="sum">
+                        <a href="javascript:;" class="plus">+</a>
+                    </div>
+                </li>
+                <li class="list_sum">
+                    <p class="sum_price">￥[[${cartList[5].getPrice()}]]</p>
+                </li>
+                <li class="list_op">
+                    <p class="del"><a href="javascript:;" class="delBtn"
+                                      th:onclick="'delCartById('+${cartList[5].getId()}+')'">移除商品</a></p>
+                </li>
+            </ul>
+            <ul class="order_lists" th:if="${cartList.size()>=7}">
+                <li class="list_chk">
+                    <input type="checkbox" id="checkbox_9" name="test" class="son_check">
+                    <label for="checkbox_9"></label>
+                </li>
+                <li class="list_con">
+                    <input class="cartId" style="display: none" th:value="${cartList[6].getId()}">
+                    <div class="list_img"><a href="javascript:;"><img th:src="${cartList[6].getUrl()}" alt=""></a></div>
+                    <div class="list_text"><a href="javascript:;">[[${cartList[6].getCart_name()}]]</a></div>
+                </li>
+                <li class="list_info">
+                    <p>出版社：[[${cartList[6].getPress()}]]</p>
+                    <p>日期：[[${cartList[6].getDate()}]]</p>
+                </li>
+                <li class="list_price">
+                    <p class="price">￥[[${cartList[6].getPrice()}]]</p>
+                </li>
+                <li class="list_amount">
+                    <div class="amount_box">
+                        <a href="javascript:;" class="reduce reSty">-</a>
+                        <input type="text" value="1" class="sum">
+                        <a href="javascript:;" class="plus">+</a>
+                    </div>
+                </li>
+                <li class="list_sum">
+                    <p class="sum_price">￥[[${cartList[6].getPrice()}]]</p>
+                </li>
+                <li class="list_op">
+                    <p class="del"><a href="javascript:;" class="delBtn"
+                                      th:onclick="'delCartById('+${cartList[6].getId()}+')'">移除商品</a></p>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--底部-->
+    <div class="bar-wrapper">
+        <span style="color: black;font-weight: bold">收货地址：</span>
+        <input type="text" id="address" class="tip"/>
+        <div class="bar-right">
+            <div class="piece">已选商品<strong class="piece_num">0</strong>件</div>
+            <div class="totalMoney">共计: <strong class="total_text">0.00</strong></div>
+            <div class="calBtn"><a th:href="@{/toOrder}" th:onclick="sub_order()">提交订单</a></div>
+        </div>
+    </div>
+</section>
+<!--<section class="model_bg"></section>-->
+<!--<section class="my_model">-->
+<!--	<p class="title">删除宝贝<span class="closeModel">X</span></p>-->
+<!--	<p>您确认要删除该宝贝吗？</p>-->
+<!--	<div class="opBtn"><a href="javascript:;" class="dialog-sure">确定</a><a href="javascript:;" class="dialog-close">关闭</a></div>-->
+<!--</section>-->
+
+<script src="/js/jquery.min2.js"></script>
+<script src="/js/carts.js" th:inline="javascript" type="text/javascript"></script>
+
+</body>
+</html>

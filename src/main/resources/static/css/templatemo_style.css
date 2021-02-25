@@ -57,7 +57,26 @@ img {
 	text-decoration: none;
 }
 
+.buy_now_button2 a{
+	position: relative;
+	left: 110px;
+	top: -35px;
+	clear: both;
+	text-align: center;
+	display: block;
+	width: 80px;
+	padding: 4px 0 5px 0;
+	margin-bottom: 10px;
+	background: url(../img/templatemo_btn_02.jpg) no-repeat;
+	color: #FFFFFF;
+	font-weight: bold;
+	text-decoration: none;
+}
+
 .detail_button a{
+	position: relative;
+	left: 0px;
+	top: -40px;
 	clear: both;
 	text-align: center;
 	display: block;

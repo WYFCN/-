@@ -1,10 +1,7 @@
 package com.example.newspape.controller;
 
 import com.example.newspape.bean.*;
-import com.example.newspape.service.BookService;
-import com.example.newspape.service.CategoryService;
-import com.example.newspape.service.LoginService;
-import com.example.newspape.service.UserService;
+import com.example.newspape.service.*;
 import com.example.newspape.util.PageUtil;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +23,8 @@ import java.util.List;
 @Controller
 public class UserController {
     @Autowired
+    CartService cartService;
+    @Autowired
     JavaMailSender mailSender;
     @Autowired
     UserService userService;
@@ -40,7 +39,7 @@ public class UserController {
         return "index";
     }
     @PostMapping("/yanzheng")
-    public String yanzheng(User user, Model model,HttpServletRequest request){
+    public String yanzheng(User user, Model model,HttpServletRequest request,HttpSession session){
         System.out.println(user);
         String s= userService.yanzheng(user.getUsername(), user.getPassword());
         System.out.println(s);
@@ -62,9 +61,10 @@ public class UserController {
 //
             Login login = loginService.getLogin(user.getUsername());
             System.out.println(login);
-            if("null".equals(login))
+            if(login == null)
             {
                 //loginService.updateLogin02(user.getUsername());
+                System.out.println(user.getUsername());
                 loginService.InsertLogin(user.getUsername(),"已登录");
                 List<Book> books = bookService.getAllBooks();
                 // 参数为当前页码、每页显示条数、查询的列表集合
@@ -80,6 +80,9 @@ public class UserController {
                 model.addAttribute("flag",1);
                 request.getSession().setAttribute("loginUser",user.getUsername());
                 request.getSession().setAttribute("USERNAME",userService.getName(user.getUsername()));
+
+                List<Cart> cartList = cartService.cartListByUserName(user.getUsername());
+                session.setAttribute("cartLen",cartList.size());
                 return "list";
             }else{
                 String loginState = login.getLogin_state();
@@ -101,6 +104,8 @@ public class UserController {
                     model.addAttribute("flag",1);
                     request.getSession().setAttribute("loginUser",user.getUsername());
                     request.getSession().setAttribute("USERNAME",userService.getName(user.getUsername()));
+                    List<Cart> cartList = cartService.cartListByUserName(user.getUsername());
+                    session.setAttribute("cartLen",cartList.size());
                     return "list";
                 }else{
                     model.addAttribute("msg","已经登录，请勿在登录");

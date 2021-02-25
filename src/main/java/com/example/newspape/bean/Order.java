@@ -1,7 +1,14 @@
 package com.example.newspape.bean;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Order implements Serializable {
     private int id;
     private String num;

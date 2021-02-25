@@ -1,5 +1,5 @@
-package com.example.amqp.config;
-
+//package com.example.newspape.amqp.config;
+package com.example.newspape.config;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
@@ -70,7 +70,7 @@ public class MyAmqpConfig {
 
     @Bean
     public ConnectionFactory connectionFactory() {
-        CachingConnectionFactory connectionFactory = new CachingConnectionFactory("192.168.43.130", 5672);
+        CachingConnectionFactory connectionFactory = new CachingConnectionFactory("172.20.10.9", 5672);
         connectionFactory.setUsername("guest");
         connectionFactory.setPassword("guest");
         return connectionFactory;

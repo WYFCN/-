@@ -153,6 +153,7 @@ function ajaxSubmit(id,orderUtil,index) {
         contentType: 'application/json',
         success: function (result) {
             alert(result["result"]);
+            window.location.reload();
         }
     })
 }
